@@ -13,36 +13,68 @@ func main() {
 
 func check() {
 	var usernumber int
-	generatornumber()
-	var programnumber int = generatornumber()
-	fmt.Println("Угадай какое я загадал число за 3 попытки)))")
-	fmt.Scanf("%d\n", &usernumber)
+	var programmnumber int = generatornumber()
+	PrintFirstMessGame()
+	usernumber = PrintUserNumber(usernumber)
 	for i := 2; i >= 0; i-- {
-		if usernumber > programnumber {
-			fmt.Println("АХАха Лох твоё число больше загаданного.")
 
-		} else if usernumber < programnumber {
-			fmt.Println("Аахаха Лох твоё число меньше загаданного.")
-
-		} else {
+		switch {
+		case usernumber > programmnumber:
+			PrintMessLoseHigh()
+		case usernumber < programmnumber:
+			PrintMessLoseLow()
+		case usernumber == programmnumber:
 			i = 0
-			fmt.Println("Хорош!!! Ты угадал!!!! ")
-
+			PrintMessWin()
 		}
+
 		if i == 0 {
-			fmt.Println("Этим число было: ", programnumber)
-			fmt.Println("\nДавай сыграем ещё раз")
+			Answer(programmnumber)
+			PrintMessAgainGame()
 			check()
 		} else {
-			fmt.Println("Осталось попыток: ", i, "Угадай снова какое число загдал")
-			fmt.Scanf("%d\n", &usernumber)
+			LeftTry(i)
+			usernumber = PrintUserNumber(usernumber)
 		}
 
 	}
 
 }
 
+func PrintUserNumber(usernumber int) int {
+	fmt.Scanf("%d\n", &usernumber)
+	return usernumber
+}
+
+func PrintFirstMessGame() {
+	fmt.Println("Угадай какое я загадал число за 3 попытки)))")
+}
+
 func generatornumber() int {
 	var generator int = rand.Intn(20)
 	return generator
+}
+
+func PrintMessLoseLow() {
+	fmt.Println("Аахаха Лох твоё число меньше загаданного. ")
+}
+
+func PrintMessLoseHigh() {
+	fmt.Println("АХАха Лох твоё число больше загаданного. ")
+}
+
+func PrintMessAgainGame() {
+	fmt.Print("\nДавай сыграем ещё раз. ")
+}
+
+func PrintMessWin() {
+	fmt.Println("Хорош!!! Ты угадал!!!! ")
+}
+
+func LeftTry(i int) {
+	fmt.Printf("Осталось попыток: %v Угадай снова какое число загдал\n", i)
+}
+
+func Answer(programmnumber int) {
+	fmt.Printf("Этим число было: %v", programmnumber)
 }
