@@ -5,6 +5,8 @@ import (
 	"math/rand"
 )
 
+var intArr []int
+
 func main() {
 	check()
 	var a string
@@ -15,9 +17,10 @@ func check() {
 	var usernumber int
 	var programmnumber int = generatornumber()
 	PrintFirstMessGame()
-	usernumber = PrintUserNumber(usernumber)
+	intArr = nil
 	for i := 2; i >= 0; i-- {
-
+		usernumber = PrintUserNumber(usernumber)
+		intArr = append(intArr, usernumber)
 		switch {
 		case usernumber > programmnumber:
 			PrintMessLoseHigh()
@@ -27,17 +30,15 @@ func check() {
 			i = 0
 			PrintMessWin()
 		}
-
-		if i == 0 {
-			Answer(programmnumber)
-			PrintMessAgainGame()
-			check()
-		} else {
+		if i > 0 {
 			LeftTry(i)
-			usernumber = PrintUserNumber(usernumber)
 		}
 
 	}
+	Answer(programmnumber)
+	PrintMessAgainGame()
+	PrintAllAnswer()
+	check()
 
 }
 
@@ -77,4 +78,8 @@ func LeftTry(i int) {
 
 func Answer(programmnumber int) {
 	fmt.Printf("Этим число было: %v", programmnumber)
+}
+
+func PrintAllAnswer() {
+	fmt.Println("Ваши ответы за игру:", intArr)
 }
