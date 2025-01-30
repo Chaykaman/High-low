@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"math/rand"
+	"os"
 )
 
 var intArr []int
@@ -19,7 +21,15 @@ func check() {
 	PrintFirstMessGame()
 	intArr = nil
 	for i := 2; i >= 0; i-- {
-		usernumber = PrintUserNumber(usernumber)
+		var err error
+		usernumber, err = PrintUserNumber()
+		if err != nil {
+			fmt.Println("Ошибка: введите число, а не текст! Введи ещё раз число")
+			clearInput()
+			i++
+			continue
+		}
+
 		intArr = append(intArr, usernumber)
 		switch {
 		case usernumber > programmnumber:
@@ -27,8 +37,8 @@ func check() {
 		case usernumber < programmnumber:
 			PrintMessLoseLow()
 		case usernumber == programmnumber:
-			i = 0
 			PrintMessWin()
+			i = -1
 		}
 		if i > 0 {
 			LeftTry(i)
@@ -42,9 +52,18 @@ func check() {
 
 }
 
-func PrintUserNumber(usernumber int) int {
-	fmt.Scanf("%d\n", &usernumber)
-	return usernumber
+func clearInput() {
+	reader := bufio.NewReader(os.Stdin)
+	reader.ReadString('\n')
+}
+
+func PrintUserNumber() (int, error) {
+	var usernumber int
+	_, err := fmt.Scan(&usernumber)
+	if err != nil {
+		return 0, err
+	}
+	return usernumber, nil
 }
 
 func PrintFirstMessGame() {
@@ -52,7 +71,7 @@ func PrintFirstMessGame() {
 }
 
 func generatornumber() int {
-	var generator int = rand.Intn(20)
+	var generator int = rand.Intn(20) + 1
 	return generator
 }
 
